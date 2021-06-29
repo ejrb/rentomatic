@@ -5,7 +5,7 @@ VALID_FILTERS = {
 
 
 class RoomListValidRequest:
-    def __init__(self, filters):
+    def __init__(self, filters=None):
         self.filters = filters
 
     @staticmethod

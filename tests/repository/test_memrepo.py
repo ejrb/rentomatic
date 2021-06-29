@@ -44,3 +44,51 @@ def test_repository_list_without_parameters(room_dicts):
     rooms = [Room.from_dict(r) for r in room_dicts]
 
     assert repo.list() == rooms
+
+
+def test_repository_list_with_code_equal_filter(room_dicts):
+    repo = MemRepo(room_dicts)
+
+    code = '49040fcb-74d4-4762-b914-852602347912'
+
+    rooms = repo.list({'code__eq': code})
+    assert len(rooms) == 1
+    assert rooms[0].code == code
+
+
+def test_repository_list_with_price_equal_filter(room_dicts):
+    repo = MemRepo(room_dicts)
+
+    price = 60
+
+    rooms = repo.list({'price__eq': 60})
+    assert len(rooms) == 1
+    assert rooms[0].price == price
+
+
+def test_repository_list_with_price_greater_than_filter(room_dicts):
+    repo = MemRepo(room_dicts)
+
+    price = 60
+
+    rooms = repo.list({'price__gt': price})
+    assert rooms
+    assert all(room.price > price for room in rooms)
+
+
+def test_repository_list_with_price_less_than_filter(room_dicts):
+    repo = MemRepo(room_dicts)
+
+    price = 60
+
+    rooms = repo.list({'price__lt': price})
+    assert rooms
+    assert all(room.price < price for room in rooms)
+
+
+def test_repository_list_with_price_between_filter(room_dicts):
+    repo = MemRepo(room_dicts)
+
+    rooms = repo.list({'price__lt': 65, 'price__gt': 55})
+    assert rooms
+    assert all(55 < room.price < 65 for room in rooms)
