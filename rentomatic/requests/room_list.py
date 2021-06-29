@@ -1,6 +1,6 @@
 VALID_FILTERS = {
-    'code': ['eq', ],
-    'price': ['eq', 'lt', 'gt']
+    'code': (int, ['eq', ]),
+    'price': (int, ['eq', 'lt', 'gt'])
 }
 
 
@@ -30,8 +30,10 @@ class RoomListInvalidRequest:
 
 def build_room_list_request(filters=None):
     invalid_rq = RoomListInvalidRequest()
+    valid_filters = None
 
     if filters is not None:
+        valid_filters = {}
 
         if not isinstance(filters, dict):
             invalid_rq.add_error('filters', 'Is not a dict')
@@ -41,13 +43,21 @@ def build_room_list_request(filters=None):
             if isinstance(key, str):
                 attr, *op = key.split('__')
                 op = op[0] if len(op) == 1 else 'ERROR'
-                valid_ops = VALID_FILTERS.get(attr, [])
+                type_, valid_ops = VALID_FILTERS.get(attr, (str, []))
+
                 if op not in valid_ops:
                     invalid_rq.add_error('filters', f'Invalid filter key: {key}')
+
+                try:
+                    valid_value = type_(value)
+                except (TypeError, ValueError):
+                    invalid_rq.add_error('filters', f'Invalid filter value for {key}: {value}')
+                else:
+                    valid_filters[key] = valid_value
             else:
                 invalid_rq.add_error('filters', f'Invalid filter key: {key}')
 
     if invalid_rq.has_errors():
         return invalid_rq
     else:
-        return RoomListValidRequest(filters=filters)
+        return RoomListValidRequest(filters=valid_filters)
