@@ -1,6 +1,6 @@
 class ResponseTypes:
     SUCCESS = 'success'
-    UNKNOWN_ERROR = 'unknown_error'
+    SYSTEM_ERROR = 'system_error'
     PARAMETERS_ERROR = 'parameters_error'
 
 
@@ -18,6 +18,10 @@ class ResponseFailure:
 
     def __bool__(self):
         return False
+
+    @property
+    def value(self):
+        return {'type': self.type, 'message': self.message}
 
 
 class ResponseSuccess:

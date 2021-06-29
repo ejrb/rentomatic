@@ -5,6 +5,7 @@ import pytest
 
 from rentomatic.domain.room import Room
 from rentomatic.requests.room_list import build_room_list_request
+from rentomatic.responses import ResponseTypes
 from rentomatic.use_cases.room_list import room_list_use_case
 
 
@@ -53,5 +54,34 @@ def test_room_list_without_parameters(domain_rooms):
     response = room_list_use_case(repo, request)
 
     assert bool(response) is True
-    repo.list.assert_called_with()
+    repo.list.assert_called_with(filters=None)
     assert response.value == domain_rooms
+
+
+def test_room_list_handles_generic_error():
+    repo = mock.Mock()
+    repo.list.side_effect = Exception('Something went wrong!')
+
+    request = build_room_list_request(filters={})
+
+    response = room_list_use_case(repo, request)
+
+    assert bool(response) is False
+    assert response.value == {
+        'type': ResponseTypes.SYSTEM_ERROR,
+        'message': 'Exception: Something went wrong!'
+    }
+
+
+def test_room_list_handles_bad_request():
+    repo = mock.Mock()
+
+    request = build_room_list_request(filters=5)
+
+    response = room_list_use_case(repo, request)
+
+    assert bool(response) is False
+    assert response.value == {
+        'type': ResponseTypes.PARAMETERS_ERROR,
+        'message': 'filters: Is not a dict'
+    }
