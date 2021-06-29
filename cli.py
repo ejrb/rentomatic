@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from rentomatic.repository.memrepo import MemRepo
+from rentomatic.requests.room_list import RoomListValidRequest
 from rentomatic.use_cases.room_list import room_list_use_case
 
 rooms = [
@@ -35,6 +36,5 @@ rooms = [
 ]
 
 repo = MemRepo(rooms)
-result = room_list_use_case(repo)
-
-print(result)
+result = room_list_use_case(repo, RoomListValidRequest())
+print(result.value)
