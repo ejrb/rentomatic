@@ -79,4 +79,4 @@ def test_repository_list_with_price_between_filter(
 
     assert len(repo_rooms) == 1
     assert 40 < repo_rooms[0].price < 50
-    assert repo_rooms[0].code == 'a75e7615-a414-4742-b3fa-e34f0c1854fb'
+    assert repo_rooms[0].code == 'd15602fd-d07c-4d8f-9520-5270ec0b31a1'
