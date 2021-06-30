@@ -1,5 +1,5 @@
 VALID_FILTERS = {
-    'code': (int, ['eq', ]),
+    'code': (str, ['eq', ]),
     'price': (int, ['eq', 'lt', 'gt'])
 }
 
