@@ -104,22 +104,25 @@ def test(args):
     cmdline = docker_compose_cmdline('up -d')
     subprocess.call(cmdline)
 
-    cmdline = docker_compose_cmdline('logs postgres')
-    wait_for_logs(cmdline, 'ready to accept connections')
+    try:
+        cmdline = docker_compose_cmdline('logs postgres')
+        wait_for_logs(cmdline, 'ready to accept connections')
+        cmdline = docker_compose_cmdline('logs mongo')
+        wait_for_logs(cmdline, 'Waiting for connections')
 
-    run_sql([f'CREATE DATABASE {os.getenv("APPLICATION_DB")}'])
+        run_sql([f'CREATE DATABASE {os.getenv("APPLICATION_DB")}'])
 
-    cmdline = [
-        'pytest',
-        '-svv',
-        '--cov=application',
-        '--cov-report=term-missing'
-    ]
-    cmdline.extend(args)
-    subprocess.call(cmdline)
-
-    cmdline = docker_compose_cmdline('down')
-    subprocess.call(cmdline)
+        cmdline = [
+            'pytest',
+            '-svv',
+            '--cov=application',
+            '--cov-report=term-missing'
+        ]
+        cmdline.extend(args)
+        subprocess.call(cmdline)
+    finally:
+        cmdline = docker_compose_cmdline('down')
+        subprocess.call(cmdline)
 
 
 if __name__ == '__main__':
