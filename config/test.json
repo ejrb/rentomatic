@@ -1,0 +1,34 @@
+[
+    {
+        "name": "FLASK_ENV",
+        "value": "production"
+    },
+    {
+        "name": "FLASK_CONFIG",
+        "value": "test"
+    },
+    {
+        "name": "POSTGRES_DB",
+        "value": "postgres"
+    },
+    {
+        "name": "POSTGRES_USER",
+        "value": "test"
+    },
+    {
+        "name": "POSTGRES_HOSTNAME",
+        "value": "localhost"
+    },
+    {
+        "name": "POSTGRES_PORT",
+        "value": "5433"
+    },
+    {
+        "name": "POSTGRES_PASSWORD",
+        "value": "test"
+    },
+    {
+        "name": "APPLICATION_DB",
+        "value": "rentomatic"
+    }
+]
