@@ -5,7 +5,7 @@
     },
     {
         "name": "FLASK_CONFIG",
-        "value": "test"
+        "value": "testing"
     },
     {
         "name": "POSTGRES_DB",
@@ -13,7 +13,7 @@
     },
     {
         "name": "POSTGRES_USER",
-        "value": "test"
+        "value": "postgres"
     },
     {
         "name": "POSTGRES_HOSTNAME",
@@ -25,7 +25,7 @@
     },
     {
         "name": "POSTGRES_PASSWORD",
-        "value": "test"
+        "value": "postgres"
     },
     {
         "name": "APPLICATION_DB",
