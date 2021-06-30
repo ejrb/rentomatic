@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
 from rentomatic.domain import room
 from rentomatic.repository.postgres_objects import Base, Room
 
@@ -20,11 +19,21 @@ class PostgresRepo:
         Base.metadata.create_all(self.engine)
         Base.metadata.bind = self.engine
 
-    def list(self):
+    def list(self, filters=None):
         DBSession = sessionmaker(bind=self.engine)
         session = DBSession()
 
         query = session.query(Room)
+
+        if filters is not None:
+            if 'code__eq' in filters:
+                query = query.filter(Room.code == filters['code__eq'])
+            if 'price__eq' in filters:
+                query = query.filter(Room.price == filters['price__eq'])
+            if 'price__lt' in filters:
+                query = query.filter(Room.price < filters['price__lt'])
+            if 'price__gt' in filters:
+                query = query.filter(Room.price > filters['price__gt'])
 
         return self._create_room_objects(query.all())
 
