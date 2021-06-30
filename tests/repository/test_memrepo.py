@@ -39,6 +39,7 @@ def room_dicts():
 
 
 def test_repository_list_without_parameters(room_dicts):
+    print(room_dicts)
     repo = MemRepo(room_dicts)
 
     rooms = [Room.from_dict(r) for r in room_dicts]
